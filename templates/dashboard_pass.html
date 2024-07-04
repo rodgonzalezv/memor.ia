@@ -1,0 +1,34 @@
+{% extends 'memoria/dashboard_base.html' %} 
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+    .abs-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40vh;
+      }
+      
+    .mi_input{
+        border:1px solid #red;
+    }
+
+</style>
+
+<div class="container">
+    <h1>Cambiar contraseña</h1>    
+    <div class="abs-center">
+
+        <form method="post">
+            {% csrf_token %}
+            {% crispy form %}
+          </form>
+          
+    </div>
+</div>
+
+{% if error %}
+    <p>{{ error }}</p>
+{% endif %}
+
+{% endblock %}

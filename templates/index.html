@@ -1,0 +1,164 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>memorIA</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.js"
+        integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js"
+        integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i"
+        crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="{% static '/img/logo1.png' %}" width="70%" alt="Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link" style="font-size: 18px;{% if request.path == '/' %}font-weight: bold; color:#336699; {% endif %}"
+                            href="{% url 'home' %}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="font-size: 18px; {% if request.path == '/quienes_somos' %}font-weight: bold; color:#336699; {% endif %}" href="{% url 'quienes_somos' %}">Quienes
+                            Somos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="font-size: 18px; {% if request.path == '/planes' %}font-weight: bold; color:#336699; {% endif %}" href="{% url 'planes' %}">Planes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="font-size: 18px; {% if request.path == '/galeria' %}font-weight: bold; color:#336699; {% endif %}" href="{% url 'galeria' %}">Galeria</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="font-size: 18px; {% if request.path == '/contacto' %}font-weight: bold; color:#336699; {% endif %}" href="{% url 'contacto' %}">Contacto</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                {% if user.is_authenticated %}
+                    <a class="nav-link" style="font-size: 18px; {% if request.path == '/dashboard_home' %}font-weight: bold; color:#336699; {% endif %}" href="{% url 'dashboard_home' %}">
+                    <p>Bienvenido {{ request.user.username }}
+                    </a>        
+                {% else %}
+                <a class="btn btn-primary" style="font-size: 18px;" href="{% url 'dashboard_home' %}">Ingresar</a>
+
+                 <!--   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLogin">
+                        Ingresar
+                    </button>-->&nbsp;
+                    <a style="font-size: 18px;" href="{% url 'userRegistro' %}" class="btn btn-secondary">Registro</a>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="modalLogin" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content modal-dialog-centered">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Ingreso al sistema</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <main class="form-signin w-100 m-auto mx-auto">
+                        <form name="formLogin" action="{% url 'dashboard_home' %} id="formLogin" method="post">
+                            {% csrf_token %}
+                            <img class="mb-4" src="{% static '/img/logo1.png' %}" alt="" width="300" padding>
+                            <div>
+                                <input type="text" class="form-control" id="floatingPassword" name="username">
+                            </div>
+                            <div >
+                                <input type="password" class="form-control" id="floatingPassword" name="password">
+                            </div>
+                            <button type="submit" id="botonLogin" class="btn btn-primary" data-bs-dismiss="modal"
+                                >Ingresar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </form>
+                    </main>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal Registro-->
+
+    <div class="container">
+    {% block content %}
+    {% endblock %}
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+
+
+          <div class="col-4 mx-auto">
+            <p class="lead text-body-secondary">
+              "Preservamos recuerdos con IA. Contáctanos para crear un memorial virtual personalizado y mantener vivo el legado de tus seres queridos."
+            </p>
+            <p>
+          </div>
+
+          <div class="col-2 mx-auto">
+            <ul class="nav flex-column">
+              <li class="nav-item mb-2"><a href="{% url 'home' %}" class="nav-link link-dark">Inicio</a></li>
+              <li class="nav-item mb-2"><a href="{% url 'quienes_somos' %}" class="nav-link">Quienes Somos</a></li>
+              <li class="nav-item mb-2"><a href="{% url 'planes' %}" class="nav-link">Planes</a></li>
+              <li class="nav-item mb-2"><a href="{% url 'galeria' %}" class="nav-link">Galeria</a></li>
+              <li class="nav-item mb-2"><a href="{% url 'contacto' %}" class="nav-link">Contactenos</a></li>
+            </ul>
+          </div>
+
+          <div class="col-5">
+            <form>
+              <h5>Ten noticias nuestras</h5>
+              <p>Dejanos tu correo y te enviaremos noticias de nuestros servicios.</p>
+              <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+                <label for="newsletter1" class="visually-hidden">Email</label>
+                <input id="newsletter1" type="text" class="form-control" placeholder="Correo Electronico">
+                <button class="btn btn-primary" type="button">Suscribase</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+    </div>
+
+
+    <div class="container">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+            <div class="col-md-4 d-flex align-items-center">
+                <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
+                    <svg class="bi" width="30" height="24">
+                        <use xlink:href="#bootstrap"></use>
+                    </svg>
+                </a>
+                <span class="mb-3 mb-md-0 text-body-secondary">© 2023 MemorIA SpA, Santiago - Chile</span>
+            </div>
+
+            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+                <li class="ms-3"><a class="text-body-secondary" href="#">Twitter</a></li>
+                <li class="ms-3"><a class="text-body-secondary" href="#">Instagram</a></li>
+            </ul>
+        </footer>
+    </div>
+
+</body>
+
+</html>

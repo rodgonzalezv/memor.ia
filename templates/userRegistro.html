@@ -1,0 +1,36 @@
+{% extends 'memoria/index.html' %} 
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+    .abs-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40vh;
+      }
+      
+    .mi_input{
+        border:1px solid #red;
+    }
+
+</style>
+
+<div class="container">
+    <div class="abs-center">
+
+
+        <form method="post"><h2>Registro de Usuario</h2>
+            {% csrf_token %}
+            {% crispy userRegistro %}
+        </form>
+        
+          
+          
+    </div>
+</div>
+
+{% if error %}
+    <p>{{ error }}</p>
+{% endif %}
+
+{% endblock %}

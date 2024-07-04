@@ -1,0 +1,67 @@
+{% extends 'memoria/dashboard_base.html' %} 
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<style>
+    .abs-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40vh;
+    }
+    
+    .mi_input {
+        border: 1px solid #red;
+    }
+
+    .form-container {
+        position: relative;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 10px;
+        padding: 60px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-fields {
+        width: 100%;
+    }
+
+    body {
+        background-image: url("{% static 'img/cloudsbackground.png' %}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+</style>
+
+
+<h1>Actualización de familiar</h1>
+<div class="container">
+    <div class="abs-center">
+        <div class="form-container">
+            <div class="form-fields">
+                <form method="post" class="formFamiliar">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="form-group">
+                        {{ form.user_id }}
+                        <input type="hidden">
+                    </div>
+                    <input type="hidden" id="avatar-picture-input" name="avatar_picture">
+                    </br>
+                    <button type="submit" class="btn btn-primary">Actualizar familiar</button>
+                </form>
+            </div>
+            <div class="avatar-container">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if error %}
+    <p>{{ error }}</p>
+{% endif %}
+
+{% endblock %}
+

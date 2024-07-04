@@ -1,0 +1,86 @@
+{% extends 'memoria/dashboard_base.html' %} 
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+
+<style>
+.familiar-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.familiar-list th, .familiar-list td {
+    padding: 8px;
+    text-align: center;
+}
+
+.familiar-list th {
+    background-color: #f2f2f2;
+}
+
+.familiar-list tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.familiar-list tr:hover {
+    background-color: #e6e6e6;
+}
+
+.familiar-list td:first-child {
+    text-align: left;
+}
+
+.familiar-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.familiar-actions a, .familiar-actions button {
+    margin-right: 5px;
+}
+
+.familiar-actions a.btn-edit, .familiar-actions button.btn-edit {
+    color: #007bff;
+}
+
+.familiar-actions a.btn-delete, .familiar-actions button.btn-delete {
+    color: #dc3545;
+}
+</style>
+<table class="familiar-list">
+    <thead>
+        <tr>
+            <th>Nombre y Apellidos</th>
+            <th>Edad</th>
+            <th>Parentezco</th>
+            <th>Fecha de Deceso</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for familiar in familiares %}
+        <tr>
+            <td>{{ familiar.nombre_apellidos }}</td>
+            <td>{{ familiar.edad }}</td>
+            <td>{{ familiar.parentezco }}</td>
+            <td>{{ familiar.fecha_deceso }}</td>
+            <td class="familiar-actions">
+                <a href="{% url 'dashboard_familiarUpdate' familiar.id_familiar %}" class="btn btn-sm btn-primary">Editar</a>
+                <form action="{% url 'familiarDelete' familiar.id_familiar %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este Familiar?')">Eliminar</button>
+                </form>
+            </td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if error %}
+    <p>{{ error }}</p>
+{% endif %}
+
+{% endblock %}
+
