@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-xzvpr#7h@wk*-ldpx@lzt6^x=omvhq%8(tweeu))e+#)42wk!k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.memor-ia.cl', 'memor-ia.cl', '200.29.217.86']
+#ALLOWED_HOSTS = ['www.memor-ia.cl', 'memor-ia.cl', '200.29.217.86', '*']
 
 
 # Application definition
