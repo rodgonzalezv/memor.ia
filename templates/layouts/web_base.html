@@ -31,19 +31,21 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-
+                        <a class="nav-link" style="font-size: 18px;{% if request.path == '/' %}font-weight: bold; color:#336699; {% endif %}"
+                            href="{% url 'inicio' %}">Inicio</a>
                     </li>
                     <li class="nav-item">
-
+                        <a class="nav-link" style="font-size: 18px; {% if request.path == '/quienes_somos' %}font-weight: bold; color:#336699; {% endif %}" href="{% url 'quienes_somos' %}">Quienes
+                            Somos</a>
                     </li>
                     <li class="nav-item">
-
+                        <a class="nav-link" style="font-size: 18px; {% if request.path == '/planes' %}font-weight: bold; color:#336699; {% endif %}" href="{% url 'planes' %}">Planes</a>
                     </li>
                     <li class="nav-item">
-
+                        <a class="nav-link" style="font-size: 18px; {% if request.path == '/galeria' %}font-weight: bold; color:#336699; {% endif %}" href="{% url 'galeria' %}">Galeria</a>
                     </li>
                     <li class="nav-item">
-
+                        <a class="nav-link" style="font-size: 18px; {% if request.path == '/contacto' %}font-weight: bold; color:#336699; {% endif %}" href="{% url 'contacto' %}">Contacto</a>
                     </li>
                 </ul>
                 <div class="d-flex">
@@ -89,7 +91,7 @@ bienvenido
         <div class="row">
             <div class="col-4 mx-auto">
                 <p class="lead text-body-secondary">
-                    "Preservamos recuerdos con IA. Contáctanos para crear un memorial virtual personalizado y mantener vivo el legado de tus seres queridos.   aaaaaa"
+                    "Preservamos recuerdos con IA. Contáctanos para crear un memorial virtual personalizado y mantener vivo el legado de tus seres queridos."
                 </p>
             </div>
 
@@ -117,7 +119,7 @@ bienvenido
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
             <div class="col-md-4 d-flex align-items-center">
                 <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
-                    <svg class="bi" width="30" height="24">
+                    <svg class="bi" width="30" height="24">aaaaaa
                         <use xlink:href="#bootstrap"></use>
                     </svg>
                 </a>
