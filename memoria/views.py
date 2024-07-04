@@ -9,5 +9,6 @@ def simple(request, name):
     return render(request, 'simple.html', context)
 
 def dinamico(request, name):
-    context={'name':name}
+    arreglo=['josefina', 'matilda', 'javier','natalia']
+    context={'name':name, 'nombres':arreglo}
     return render(request, 'simple.html', context)

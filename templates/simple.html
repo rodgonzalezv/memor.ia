@@ -7,5 +7,10 @@
 </head>
 <body>
     <h1>hola {{name}}</h1>
+    <h1>
+        {% for nombre in nombres %}
+        <p>{{nombre}}</p>
+        {% endfor%}
+    </h1>
 </body>
 </html>
