@@ -1,18 +1,4 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <title>Document</title>
-</head>
-<body>
-    <h1>hola {{name}}</h1>
-    <h1>h
-        {% for nombre in nombres %}
-        <p>{{nombre}}</p>a
-        {% endfor%}
-    </h1>
-</body>
-</html>
+{% extends "./layouts/base.html" %}
+{% block content %}
+esto es una <h1>prueba</h1>
+{% endblock content %}
