@@ -49,8 +49,19 @@
                     </li>
                 </ul>
                 <div class="d-flex">
-                    <a class="btn btn-primary" style="font-size: 18px;" href="{% url 'dashboard' %}">Ingresar</a>
-                    </div>
+                    {% if user.is_authenticated %}
+                    <a class="nav-link" style="font-size: 18px; {% if request.path == '/dashboard' %}font-weight: bold; color:#336699; {% endif %}" href="{% url 'dashboard' %}">
+                    <p>Bienvenido {{ request.user.username }}
+                    </a>        
+                {% else %}
+                <a class="btn btn-primary" style="font-size: 18px;" href="{% url 'dashboard' %}">Ingresar</a>
+
+                 <!--   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLogin">
+                        Ingresar
+                    </button>-->&nbsp;
+                    <a style="font-size: 18px;" href="{% url 'userRegistro' %}" class="btn btn-secondary">Registro</a>
+                {% endif %}
+                </div>
             </div>
         </div>
     </nav>
