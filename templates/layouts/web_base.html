@@ -48,7 +48,9 @@
                         <a class="nav-link" style="font-size: 18px; {% if request.path == '/contacto' %}font-weight: bold; color:#336699; {% endif %}" href="{% url 'contacto' %}">Contacto</a>
                     </li>
                 </ul>
-
+                <div class="d-flex">
+                    <a class="btn btn-primary" style="font-size: 18px;" href="{% url 'dashboard' %}">Ingresar</a>
+                    </div>
             </div>
         </div>
     </nav>
