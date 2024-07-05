@@ -1,0 +1,105 @@
+{% extends 'memoria/index.html' %} 
+{% block content %}
+<style>
+    .image-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 100%;
+      /* Proporción de 1:1 para mantener el mismo ancho y alto */
+      overflow: hidden;
+    }
+
+    .image-container img {
+      position: absolute;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .imagen {
+      filter: grayscale(100%);
+    }
+
+    .imagen:hover {
+      filter: grayscale(0%);
+      border: 10px solid white;
+    }
+  </style>
+
+<div class="container">
+    <div id="gallery" class="row mt-4"></div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      var apiKey = "TGlsS4EmVs1XNnZUam5b96vQmeGM4SQ5ntfsumXzjXRskAKGnhqroU8f";
+
+      $.get({
+        url: "https://api.pexels.com/v1/search",
+        headers: {
+          "Authorization": apiKey
+        },
+        data: {
+          query: "elderly",
+          per_page: 24
+        },
+        success: function (response) {
+          var photos = response.photos;
+
+          photos.forEach(function (photo) {
+            var imageUrl = photo.src.medium;
+            var imageContainer = `
+                  <div class="col-md-3 mb-4">
+                    <div class="image-container">
+                      <img id="imagen-galeria" class="imagen" src="${imageUrl}" onclick="javascript:document.getElementById('imagen-modal-img').src='${imageUrl}'" alt="Foto" data-bs-toggle="modal" data-bs-target="#modalDetalle">
+                    </div>
+                  </div>
+                `;
+
+
+            $("#gallery").append(imageContainer);
+          });
+        },
+        error: function () {
+          alert("Error al cargar las fotos de personas de tercera edad");
+        }
+      });
+    });
+
+
+    function cargar_foto(imagenModal) {
+      $('#imagen-modal-img').attr('src', imagenModal);
+    }
+  </script>
+
+
+    <hr class="featurette-divider" style="margin-top: 100px;">
+
+
+      <!-- Modal Detalle-->
+  <div class="modal fade" id="modalDetalle" tabindex="-1" aria-labelledby="modalDetalle" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content modal-dialog-centered">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Imagen Galeria</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <main class="form-signin w-100 m-auto mx-auto">
+            <form>
+              <img class="mb-4" id="imagen-modal-img" alt="" width="100%">
+              <hr class="featurette-divider">
+              <p>"Honra y recuerda a tus seres queridos fallecidos con nuestro memorial virtual. Agrega fotos y
+                recuerdos especiales en línea. Escanea el código QR en la lápida y accede a su legado. #RecuerdosEternos
+                #AmorInfinito"</p>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </form>
+          </main>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

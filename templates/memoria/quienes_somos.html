@@ -1,0 +1,51 @@
+{% extends 'memoria/index.html' %} 
+{% load static %}
+{% block content %}
+
+
+<div class="container col-10 mx-auto">
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+      <div class="col-md-8">
+        <h2 class="featurette-heading fw-normal lh-1">Quienes Somos.</h2>
+        <p class="lead">Somos una empresa de memoriales virtuales que utiliza inteligencia artificial para recrear y permitir la interacción con seres queridos fallecidos en entornos virtuales. Nos apasiona ofrecer una experiencia única y significativa para aquellos que han perdido a un ser querido, con un enfoque sensible y respetuoso. Nuestro equipo altamente capacitado trabaja de la mano con cementerios y funerarias para brindar un servicio integral y personalizado. ¡Honramos y recordamos a sus seres queridos de una manera única y conmovedora!</p>
+      </div>
+      <div class="col-md-4 mx-auto" >
+        <img src="{% static '/img/quienes.png' %}" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="90%" role="img" aria-label="Quienes Somos" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"></rect><text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em"></text></img>
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row">
+      <div class="col-lg-4">
+        <img src="{% static 'img/nchavez.png'%}" class="bd-placeholder-img rounded-circle" width="180" height="180" role="img" aria-label="Nicolas Chavez" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></img>
+        <h2 class="fw-normal">Nicolas Chavez</h2>
+
+        <p>  Ingeniero informático experto en diseño de experiencia de usuario (UX) y usabilidad.</p>
+        <p><a class="btn btn-secondary" href="#">nicolas@memor.ia</a></p>
+      </div>
+      <div class="col-lg-4">
+        <img src="{% static 'img/bpina.png'%}" class="bd-placeholder-img rounded-circle" width="180" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Bladimir Piña</title><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></img>
+        <h2 class="fw-normal">Bladimir Piña</h2>
+        <p> Ingeniero informático especializado en desarrollo de software y tecnologías de inteligencia artificial.</p>
+        <p><a class="btn btn-secondary" href="#">bladimir@memor.ia</a></p>
+      </div>
+      <div class="col-lg-4">
+        <img src="{% static 'img/rgonzalez.png'%}" class="bd-placeholder-img rounded-circle" width="180" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></img>
+        <h2 class="fw-normal">Rodrigo González</h2>
+        <p> Ingeniero informático con experiencia en desarrollo de aplicaciones web y seguridad informática.</p>
+        <p><a class="btn btn-secondary" href="#">rodrigo@memor.ia</a></p>
+      </div>                
+
+    </div>
+
+
+    <hr class="featurette-divider" style="margin-top: 100px;">
+
+
+  </div>
+
+{% endblock %}
