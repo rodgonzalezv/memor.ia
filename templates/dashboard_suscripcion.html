@@ -1,4 +1,5 @@
-{% extends 'memoria/dashboard_base.html' %} 
+{% extends "./layouts/web_base.html" %}
+{% load static %} %} 
 {% load mathfilters %}
 {% load humanize %}
 {% load crispy_forms_tags %}
@@ -23,7 +24,7 @@
     <h2>Seleccione Suscripcion</h2>
     <form method="post">
       {% csrf_token %}
-      {% crispy form %}
+      {{ form|crispy }}
     </form>
 
 

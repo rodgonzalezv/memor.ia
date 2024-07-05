@@ -26,10 +26,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.core.mail',
     'mathfilters',
     'django.contrib.humanize',
     'web',
     'dashboard',
+    'crispy_forms',
+    'crispy_bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +133,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Servidor SMTP de Google
+EMAIL_PORT = 465  # Puerto del servidor SMTP de Google
+
+EMAIL_HOST_USER = 'memoria@virtual.cl'  # Dirección de correo electrónico de la cuenta de Google Workspace
+EMAIL_HOST_PASSWORD = 'Django#DuocUC'  # Contraseña de la cuenta de Google Workspace
+EMAIL_USE_SSL = True 
