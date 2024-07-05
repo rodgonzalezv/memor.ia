@@ -114,3 +114,4 @@ class Usuarios_Planes(models.Model):
 
     def __str__(self):
         return f"Usuario: {self.id_usuario.username} - Plan: {self.id_plan.nombre} - Estado: {self.estado}"
+    
