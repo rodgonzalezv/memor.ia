@@ -140,3 +140,67 @@ def activar_cuenta(request, user_id):
     except User.DoesNotExist:
         print("Usuario no encontrado o ya está activo.")
         return render(request, 'dashboard_error_activacion.html')
+
+@login_required
+def user_profile(request):
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('perfil')
+    else:
+        form = UserProfileForm(instance=request.user)
+    return render(request, 'dashboard_perfil.html', {'form': form})
+
+class CustomChangePasswordView(PasswordChangeView):
+    form_class = CustomChangePasswordForm
+    template_name = 'dashboard_pass.html'
+    success_url = reverse_lazy('userLogout')
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Contraseña cambiada correctamente.')
+        logout(self.request)
+        return response
+    
+def userLogout(request):
+    logout(request)
+    return redirect("login") 
+
+@login_required
+def dashboard_suscripcion(request):
+    user = request.user
+    
+    url = 'https://mindicador.cl/api'
+    response = requests.get(url)
+    data = response.json()
+    uf_value = data['uf']['valor']
+
+    suscripcion_existente = Usuarios_Planes.objects.filter(id_usuario=user.id).first()
+
+    if suscripcion_existente:
+
+        form = SuscripcionForm(request.POST or None, initial={'plan': suscripcion_existente.id_plan})
+        if request.method == 'POST':
+            if form.is_valid():
+                suscripcion_existente.id_plan = form.cleaned_data['plan']
+                suscripcion_existente.save()
+                return redirect('dashboard_suscripcion')
+    else:
+
+        form = SuscripcionForm(request.POST or None)
+        if request.method == 'POST':
+            if form.is_valid():
+                plan = form.cleaned_data['plan']
+                estado = 0
+                Usuarios_Planes.objects.create(id_usuario=user, id_plan=plan, estado=estado)
+                return redirect('dashboard_suscripcion')
+    
+    planes_asociados = Usuarios_Planes.objects.filter(id_usuario=user.id)
+        
+    context = {
+        'form': form,
+        'planes_asociados': planes_asociados,
+        "uf": uf_value,
+    }        
+
+    return render(request, 'dashboard_suscripcion.html', context)
