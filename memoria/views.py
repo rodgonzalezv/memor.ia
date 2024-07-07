@@ -55,12 +55,14 @@ def userLogin(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('dashboard_home')
+            return redirect('dashboard:dashboard_home')  # Use the dashboard namespace here
         else:
             messages.error(request, 'Contraseña incorrecta')
             return render(request, 'memoria/userLogin.html')
     else:
         return render(request, 'memoria/userLogin.html')
+
+
     
 def userLogout(request):
     logout(request)
