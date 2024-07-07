@@ -59,6 +59,19 @@
         </div>
     </div>
 
+    <!-- Lightbox for viewing images and comments -->
+    <div class="lightbox" id="lightbox">
+        <img src="" alt="Lightbox Image">
+        <p class="overlay-caption"></p>
+        <div id="comment-section">
+            <div id="comment-list"></div>
+            <form id="comment-form">
+                <textarea name="comment" placeholder="Add a comment" required></textarea>
+                <button type="submit">Post Comment</button>
+            </form>
+        </div>
+    </div>
+
     <script src="{% static 'carousel/js/scripts.js' %}"></script>
 </body>
 </html>

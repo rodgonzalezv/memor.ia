@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, UserChangeForm
 from .models import Planes
 from .models import Familiares
+from .models import Comment
 from django.core.exceptions import ValidationError
 
 UserModel = get_user_model()
@@ -145,3 +146,11 @@ class formFamiliarUpdate(forms.ModelForm):
             raise ValidationError("La fecha de deceso debe ser posterior a la fecha de nacimiento.")
 
         return cleaned_data
+    
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': forms.Textarea(attrs={'placeholder': 'Add a comment', 'rows': 3}),
+        }

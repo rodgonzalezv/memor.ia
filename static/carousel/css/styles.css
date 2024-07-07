@@ -204,23 +204,52 @@ body {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* Style for the overlay button */
-.overlay-button {
+#comment-section {
+    width: 90%;
+    max-height: 30%;
+    overflow-y: auto;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 10px;
     margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #ffffff;
-    color: #000000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#comment-list .comment {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #555;
+}
+
+#comment-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#comment-form textarea {
+    resize: none;
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background-color: #444;
+    color: #fff;
+}
+
+#comment-form button {
+    align-self: flex-end;
+    padding: 5px 10px;
+    background-color: #007BFF;
+    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
 }
 
-.overlay-button:hover {
-    background-color: #f0f0f0;
-}
-
-.lightbox.active img {
-    transform: scale(1);
+#comment-form button:hover {
+    background-color: #0056b3;
 }

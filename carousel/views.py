@@ -1,11 +1,16 @@
+# carousel/views.py
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import FamiliarForm
-from memoria.models import Familiares
+from memoria.models import Familiares, Comment
+from django.http import JsonResponse
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+import json
 
 def carousel_home(request, pk):
     familiar = get_object_or_404(Familiares, id_familiar=pk)
-    # Assuming there is a way to get associated images with this familiar
-    images = [familiar.avatar_picture]  # Add other images related to this familiar if any
+    images = [familiar.avatar_picture]
     return render(request, 'carousel/index.html', {'familiar': familiar, 'images': images})
 
 def add_familiar(request):
@@ -37,3 +42,19 @@ def remove_familiar(request, pk):
         familiar.delete()
         return redirect('dashboard:dashboard_home')
     return render(request, 'carousel/remove_familiar.html', {'familiar': familiar})
+
+def fetch_comments(request):
+    image_url = request.GET.get('image_url')
+    comments = Comment.objects.filter(image_url=image_url).order_by('-created_at')
+    comments_data = [{'username': comment.user.username, 'text': comment.text, 'created_at': comment.created_at} for comment in comments]
+    return JsonResponse(comments_data, safe=False)
+
+@csrf_exempt
+def post_comment(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        image_url = data['image_url']
+        text = data['text']
+        comment = Comment.objects.create(user=request.user, text=text, image_url=image_url)
+        comment_data = {'username': comment.user.username, 'text': comment.text, 'created_at': comment.created_at}
+        return JsonResponse(comment_data, status=201)

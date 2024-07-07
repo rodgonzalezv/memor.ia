@@ -1,3 +1,4 @@
+<!-- templates/memoria/userLogin.html -->
 {% extends 'memoria/index.html' %}
 {% load static %}
 {% block content %}
@@ -74,7 +75,7 @@
 <div class="abs-center">
     <div class="form-container">
         <h2 class="form-title">Ingreso de Usuarios</h2>
-        <form method="POST" action="{% url 'userLogin' %}">
+        <form method="POST" action="{% url 'memoria:userLogin' %}">
             {% csrf_token %}
             <div class="form-group">
                 <label for="username" class="form-label">Nombre de Usuario</label>
@@ -95,4 +96,3 @@
 </div>
 
 {% endblock %}
-

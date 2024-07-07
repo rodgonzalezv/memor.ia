@@ -89,24 +89,12 @@ document.addEventListener('DOMContentLoaded', function() {
         init(1);
     };
 
-    const lightbox = document.createElement('div');
-    lightbox.className = 'lightbox';
-    document.body.appendChild(lightbox);
-
-    const img = document.createElement('img');
-    lightbox.appendChild(img);
-
-    const caption = document.createElement('p');
-    caption.className = 'overlay-caption'; // Add a class for styling
-    lightbox.appendChild(caption);
-
-    const button = document.createElement('button');
-    button.textContent = 'Ver más';
-    button.className = 'overlay-button';
-    button.addEventListener('click', function() {
-        window.location.href = 'familiar_carousel/public/familiar.html'; // Navigate to familiar.html
-    });
-    lightbox.appendChild(button);
+    const lightbox = document.getElementById('lightbox');
+    const img = lightbox.querySelector('img');
+    const caption = lightbox.querySelector('.overlay-caption');
+    const commentSection = lightbox.querySelector('#comment-section');
+    const commentList = commentSection.querySelector('#comment-list');
+    const commentForm = commentSection.querySelector('#comment-form');
 
     const spinContainer = document.getElementById('spin-container');
     spinContainer.addEventListener('click', function(event) {
@@ -114,18 +102,32 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
             const anchor = event.target.closest('.item a');
             img.src = anchor.href;
-            caption.textContent = anchor.querySelector('p') ? anchor.querySelector('p').textContent : "TEST";
+            caption.textContent = anchor.querySelector('p') ? anchor.querySelector('p').textContent : "Image";
             lightbox.classList.add('active');
+
+            // Fetch and display comments
+            fetchComments(anchor.href);
         }
     });
 
     lightbox.addEventListener('click', function(event) {
-        if (event.target !== img && event.target !== button) {
+        if (event.target !== img && !commentSection.contains(event.target) && !commentForm.contains(event.target)) {
             lightbox.classList.remove('active');
             setTimeout(() => {
                 img.src = ''; // Clear the image source after the transition
             }, 500);
         }
+    });
+
+    commentForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const commentText = commentForm.querySelector('textarea').value;
+        if (commentText.trim() === '') return;
+
+        // Post the comment
+        console.log('Posting comment:', commentText);
+        postComment(commentText, img.src);
+        commentForm.reset();
     });
 
     const crudButton = document.getElementById('crud-button');
@@ -207,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const items = document.querySelectorAll('#spin-container .item');
         items.forEach((item, index) => {
             const listItem = document.createElement('li');
-            const itemText = item.querySelector('p') ? item.querySelector('p').textContent : "TEST " + (index + 1);
+            const itemText = item.querySelector('p') ? item.querySelector('p').textContent : "Image " + (index + 1);
             listItem.textContent = itemText;
             listItem.addEventListener('click', function() {
                 item.remove(); // Remove the clicked item
@@ -224,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const items = document.querySelectorAll('#spin-container .item');
         items.forEach((item, index) => {
             const listItem = document.createElement('li');
-            const itemText = item.querySelector('p') ? item.querySelector('p').textContent : "TEST " + (index + 1);
+            const itemText = item.querySelector('p') ? item.querySelector('p').textContent : "Image " + (index + 1);
             listItem.textContent = itemText;
             listItem.addEventListener('click', function() {
                 const newText = prompt('Edit the name of the Familiar:', itemText);
@@ -248,22 +250,76 @@ document.addEventListener('DOMContentLoaded', function() {
         item.querySelector('a').addEventListener('click', function(event) {
             event.preventDefault();
             img.src = this.href;
-            caption.textContent = this.querySelector('p') ? this.querySelector('p').textContent : "TEST";
+            caption.textContent = this.querySelector('p') ? this.querySelector('p').textContent : "Image";
             lightbox.classList.add('active');
+
+            // Fetch comments for the selected image
+            fetchComments(this.href);
         });
     }
 
-    function updateCarousel() {
-        const items = document.querySelectorAll('#spin-container .item');
-        const total = items.length;
-        for (var i = 0; i < total; i++) {
-            items[i].style.transform = `rotateY(${i * (360 / total)}deg) translateZ(${radius}px)`;
-            items[i].style.transition = 'transform 1s';
-            items[i].style.transitionDelay = (total - i) / 4 + 's';
-        }
+    function fetchComments(imageUrl) {
+        console.log('Fetching comments for:', imageUrl);
+        fetch(`/comments/fetch/?image_url=${encodeURIComponent(imageUrl)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Comments fetched:', data);
+                commentList.innerHTML = '';
+                data.forEach(comment => {
+                    const commentItem = document.createElement('li');
+                    commentItem.textContent = `${comment.username} (${comment.created_at}): ${comment.text}`;
+                    commentList.appendChild(commentItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching comments:', error);
+            });
     }
 
-    function hideOverlay() {
-        crudOverlay.style.display = 'none';
+    function postComment(text, imageUrl) {
+        console.log('Posting comment to:', imageUrl);
+        fetch('/comments/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken') // Function to get CSRF token
+            },
+            body: JSON.stringify({ text: text, image_url: imageUrl })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Comment posted:', data);
+            const commentItem = document.createElement('li');
+            commentItem.textContent = `${data.username} (${data.created_at}): ${data.text}`;
+            commentList.appendChild(commentItem);
+        })
+        .catch(error => {
+            console.error('Error posting comment:', error);
+        });
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
     }
 });
