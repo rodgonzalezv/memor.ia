@@ -37,13 +37,22 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Perfil de Usuario
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'dashboard:user_profile' %}">Completar datos</a>
+                        <a class="dropdown-item" href="{% url 'dashboard:cambiaPass' %}">Cambiar contraseña</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Gestionar Familiares
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{% url 'dashboard:add_familiar' %}">Añadir Familiar</a>
                         <a class="dropdown-item" href="{% url 'dashboard:list_familiares' %}">Ver Familiares</a>
                     </div>
-                </li>
+                </li>                
             </ul>
 
 

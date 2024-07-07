@@ -4,6 +4,11 @@ from .forms import FamiliaresForm
 from memoria.models import Familiares
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.urls import reverse_lazy
+from .forms import UserProfileForm, CustomChangePasswordForm
+from django.contrib import messages
+from django.contrib.auth.views import PasswordChangeView
+
 
 @login_required
 def dashboard_home(request):
@@ -51,3 +56,30 @@ def delete_familiar(request, pk):
 def userLogout(request):
     logout(request)
     return redirect('/')   
+
+
+
+@login_required
+def user_profile(request):
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    else:
+        form = UserProfileForm(instance=request.user)
+    return render(request, 'dashboard/user_profile.html', {'form': form})
+
+
+
+
+
+class CustomChangePasswordView(PasswordChangeView):
+    form_class = CustomChangePasswordForm
+    template_name = 'dashboard/dashboard_pass.html'
+    success_url = reverse_lazy('userLogout')
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Contraseña cambiada correctamente.')
+        logout(self.request)
+        return response

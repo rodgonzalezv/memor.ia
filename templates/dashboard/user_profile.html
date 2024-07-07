@@ -1,0 +1,29 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+    .abs-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40vh;
+      }
+      
+    .mi_input{
+        border:1px solid #red;
+    }
+
+</style>
+
+<div class="container">
+    <div class="form-container">
+        <h1 class="form-title">Perfil de Usuario</h1>
+        <form method="post">
+            {% csrf_token %}
+            {% crispy form %}
+            <button type="submit" class="btn btn-primary form-button">Actualizar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
