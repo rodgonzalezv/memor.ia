@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import FamiliaresForm
 from memoria.models import Familiares
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 @login_required
 def dashboard_home(request):
@@ -46,3 +47,7 @@ def delete_familiar(request, pk):
         familiar.delete()
         return redirect('dashboard:list_familiares')
     return render(request, 'dashboard/delete_familiar.html', {'familiar': familiar})
+
+def userLogout(request):
+    logout(request)
+    return redirect('/')   
