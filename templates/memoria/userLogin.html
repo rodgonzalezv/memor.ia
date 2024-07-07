@@ -1,0 +1,98 @@
+<!-- templates/memoria/userLogin.html -->
+{% extends 'memoria/index.html' %}
+{% load static %}
+{% block content %}
+<style>
+    body {
+        background-image: url("{% static 'img/cloudsbackground.png' %}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;        
+    }
+
+    .abs-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: rgba(255, 255, 255, 0.0);
+        padding: 20px;
+    }
+    
+    .form-container {
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 10px;
+        padding: 60px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .form-title {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #333;
+    }
+    
+    .form-label {
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .form-control {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background-color: rgba(255, 255, 255, 0.9);
+        width: 100%;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        border-color: #007bff;
+    }
+    
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .btn-primary:hover {
+        background-color: #0069d9;
+    }
+    
+    .error-message {
+        color: red;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="abs-center">
+    <div class="form-container">
+        <h2 class="form-title">Ingreso de Usuarios</h2>
+        <form method="POST" action="{% url 'memoria:userLogin' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username" class="form-label">Nombre de Usuario</label>
+                <input type="text" name="username" placeholder="Nombre de usuario" class="form-control" id="username">
+            </div>
+            <div class="form-group">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" name="password" placeholder="Contraseña" class="form-control" id="password">
+            </div>
+            <div class="col text-center" style="margin:8px;">    
+                <input type="submit" value="Iniciar sesión" class="btn btn-primary center-block">
+            </div>
+        </form>
+    </div>
+    {% if error %}
+        <p class="error-message">{{ error }}</p>
+    {% endif %}
+</div>
+
+{% endblock %}
