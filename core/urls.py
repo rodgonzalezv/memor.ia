@@ -10,4 +10,5 @@ urlpatterns = [
     path('memoria/', include('memoria.urls', namespace='memoria')),
     path('dashboard/', include('dashboard.urls', namespace='dashboard')),
     path('carousel/', include('carousel.urls', namespace='carousel')),
+    path('qr/', include('qr.urls', namespace='qr')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

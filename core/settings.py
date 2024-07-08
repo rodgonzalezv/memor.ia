@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'crispy_bootstrap4',
     'memoria',
     'dashboard',
-    'carousel',
+    'carousel', 
+    'qr',
 ]
 
 MIDDLEWARE = [

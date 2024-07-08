@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generar QR</title>
+</head>
+<body>
+    <h1>Generar código QR</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="url">URL:</label>
+        <input type="text" id="url" name="url">
+        <button type="submit">Generar QR</button>
+    </form>
+    {% if url %}
+    <h2>QR para: {{ url }}</h2>
+    <img src="{% url 'qr:generate_qr' %}?url={{ url }}" alt="QR Code">
+    {% endif %}
+</body>
+</html>
