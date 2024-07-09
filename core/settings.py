@@ -91,18 +91,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.memoria',
     }
 }
-"""
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "django_app",
-        "USER": "root",
-        "PASSWORD": "ROCAnajamajo33#",
-        "HOST": "35.196.58.41",
-        "PORT": "3306",
-    }
-}
-"""
+
 
 
 # Password validation
