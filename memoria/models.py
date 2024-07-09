@@ -77,7 +77,8 @@ class Familiares(models.Model):
     fecha_deceso=models.DateField(auto_now=False, auto_now_add=False)
     parentezco = models.CharField(max_length=100)
     nacionalidad = models.CharField(max_length=2, choices=OPC_NACIONALIDAD, default='CL')
-    avatar_picture = models.ImageField(upload_to='familiares_images/', null=True, blank=True)  
+    avatar_picture = models.ImageField(upload_to='familiares_images/', null=True, blank=True) 
+    hash = models.CharField(max_length=10)
 
 #    def __str__(self):
 #        return self.nombre_familiar, self.apellidos_familiar
