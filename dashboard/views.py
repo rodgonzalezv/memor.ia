@@ -31,17 +31,20 @@ def add_familiar(request):
             familiar.user = request.user
             familiar.save()
 
+            """
             # Generar código QR
             qr_url = f"{settings.SITE_URL}/{familiar.unique_hash}"
             qr = qrcode.make(qr_url)
             qr_filename = os.path.join(settings.MEDIA_ROOT, 'qrcodes', f'{familiar.unique_hash}.png')
             os.makedirs(os.path.dirname(qr_filename), exist_ok=True)  # Ensure directory exists
             qr.save(qr_filename)
+            """
 
             return redirect('dashboard:list_familiares')
     else:
         form = FamiliaresForm()
     return render(request, 'dashboard/add_familiar.html', {'form': form})
+
 
 @login_required
 def update_familiar(request, pk):
