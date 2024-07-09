@@ -5,6 +5,12 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from datetime import date
 
+import hashlib
+import os
+import random
+import string
+
+
 class Memorial(models.Model):
     id_memorial=models.AutoField(primary_key=True)
     nombre=models.CharField(max_length=250)
@@ -71,10 +77,28 @@ class Familiares(models.Model):
     fecha_deceso=models.DateField(auto_now=False, auto_now_add=False)
     parentezco = models.CharField(max_length=100)
     nacionalidad = models.CharField(max_length=2, choices=OPC_NACIONALIDAD, default='CL')
-    avatar_picture = models.ImageField(upload_to='familiares_images/', null=True, blank=True)
+    avatar_picture = models.ImageField(upload_to='familiares_images/', null=True, blank=True)  
+
+#    def __str__(self):
+#        return self.nombre_familiar, self.apellidos_familiar
+
+    def save(self, *args, **kwargs):
+        if not self.unique_hash:
+            self.unique_hash = self.generate_unique_hash()
+        super().save(*args, **kwargs)
+
+    def generate_unique_hash(self):
+        hash = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+        while Familiares.objects.filter(unique_hash=hash).exists():
+            hash = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+        return hash
 
     def __str__(self):
-        return self.nombre_familiar, self.apellidos_familiar
+        return f"{self.nombre_familiar} {self.apellidos_familiar}"
+        
+
+
+
 
 class Roles(models.Model):
     id_rol=models.AutoField(primary_key=True)

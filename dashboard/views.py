@@ -8,6 +8,8 @@ from django.urls import reverse_lazy
 from .forms import UserProfileForm, CustomChangePasswordForm
 from django.contrib import messages
 from django.contrib.auth.views import PasswordChangeView
+import qrcode
+from django.conf import settings
 
 
 @login_required
@@ -28,6 +30,13 @@ def add_familiar(request):
             familiar = form.save(commit=False)
             familiar.user = request.user
             familiar.save()
+
+            # Generar código QR
+            qr_url = f"{settings.SITE_URL}/{familiar.unique_hash}"
+            qr = qrcode.make(qr_url)
+            qr_filename = os.path.join(settings.MEDIA_ROOT, 'qrcodes', f'{familiar.unique_hash}.png')
+            qr.save(qr_filename)
+
             return redirect('dashboard:list_familiares')
     else:
         form = FamiliaresForm()

@@ -7,7 +7,7 @@
         {% for familiar in familiares %}
         <div class="col-md-4">
             <div class="card mb-3">
-                <a href="{% url 'carousel:carousel_home' familiar.id_familiar %}">
+                <a href="{% url 'carousel:carousel_home' familiar.id_familiar %}" target="_blank">
                     <img src="{{ familiar.avatar_picture.url }}" class="card-img-top" alt="Familiar Image">
                 </a>
                 <div class="card-body">
