@@ -1,4 +1,3 @@
-# carousel/urls.py
 from django.urls import path
 from . import views
 
@@ -11,4 +10,5 @@ urlpatterns = [
     path('remove/<int:pk>/', views.remove_familiar, name='remove_familiar'),
     path('comments/', views.post_comment, name='post_comment'),
     path('comments/fetch/', views.fetch_comments, name='fetch_comments'),
+    path('upload_image/', views.upload_image, name='upload_image'),
 ]

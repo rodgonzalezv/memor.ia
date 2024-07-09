@@ -1,93 +1,94 @@
 document.addEventListener('DOMContentLoaded', function() {
-    var radius = 240; // how big of the radius
-    var autoRotate = true; // auto rotate or not
-    var rotateSpeed = -60; // unit: seconds/360 degrees
-    var imgWidth = 120; // width of images (unit: px)
-    var imgHeight = 170; // height of images (unit: px)
+    const radius = 240; // how big of the radius
+    const autoRotate = true; // auto rotate or not
+    const rotateSpeed = -60; // unit: seconds/360 degrees
+    const imgWidth = 120; // width of images (unit: px)
+    const imgHeight = 170; // height of images (unit: px)
 
     setTimeout(init, 100);
 
-    var odrag = document.getElementById("drag-container");
-    var ospin = document.getElementById("spin-container");
-    var aImg = ospin.getElementsByTagName("img");
-    var aVid = ospin.getElementsByTagName("video");
-    var aEle = ospin.querySelectorAll(".item"); // combine 2 arrays
+    const odrag = document.getElementById("drag-container");
+    const ospin = document.getElementById("spin-container");
+    const aImg = ospin.getElementsByTagName("img");
+    const aVid = ospin.getElementsByTagName("video");
+    const aEle = ospin.querySelectorAll(".item"); // combine 2 arrays
 
     ospin.style.width = imgWidth + "px";
     ospin.style.height = imgHeight + "px";
 
-    var ground = document.getElementById("ground");
+    const ground = document.getElementById("ground");
     ground.style.width = radius * 3 + "px";
     ground.style.height = radius * 3 + "px";
 
     function init(delayTime) {
-        var items = document.querySelectorAll('#spin-container .item');
-        for (var i = 0; i < items.length; i++) {
-            items[i].style.transform = "rotateY(" + i * (360 / items.length) + "deg) translateZ(" + radius + "px)";
-            items[i].style.transition = "transform 1s";
-            items[i].style.transitionDelay = delayTime || (items.length - i) / 4 + "s";
-        }
+        const items = document.querySelectorAll('#spin-container .item');
+        items.forEach((item, i) => {
+            item.style.transform = `rotateY(${i * (360 / items.length)}deg) translateZ(${radius}px)`;
+            item.style.transition = "transform 1s";
+            item.style.transitionDelay = `${delayTime || (items.length - i) / 4}s`;
+        });
     }
 
-    function applyTranform(obj) {
-        if (tY > 180) tY = 180;
-        if (tY < 0) tY = 0;
-        obj.style.transform = "rotateX(" + -tY + "deg) rotateY(" + tX + "deg)";
+    function applyTransform(obj) {
+        tY = Math.min(Math.max(tY, 0), 180);
+        obj.style.transform = `rotateX(${-tY}deg) rotateY(${tX}deg)`;
     }
 
     function playSpin(yes) {
         ospin.style.animationPlayState = yes ? "running" : "paused";
     }
 
-    var sX, sY, nX, nY, desX = 0, desY = 0, tX = 0, tY = 10;
+    let sX, sY, nX, nY, desX = 0, desY = 0, tX = 0, tY = 10;
 
     if (autoRotate) {
-        var animationName = rotateSpeed > 0 ? "spin" : "spinRevert";
+        const animationName = rotateSpeed > 0 ? "spin" : "spinRevert";
         ospin.style.animation = `${animationName} ${Math.abs(rotateSpeed)}s infinite linear`;
     }
 
-    document.onpointerdown = function (e) {
+    document.addEventListener('pointerdown', function(e) {
         clearInterval(odrag.timer);
-        e = e || window.event;
-        var sX = e.clientX, sY = e.clientY;
+        sX = e.clientX;
+        sY = e.clientY;
 
-        this.onpointermove = function (e) {
-            e = e || window.event;
-            var nX = e.clientX, nY = e.clientY;
-            desX = nX - sX;
-            desY = nY - sY;
+        document.addEventListener('pointermove', onPointerMove);
+        document.addEventListener('pointerup', onPointerUp);
+    });
+
+    function onPointerMove(e) {
+        nX = e.clientX;
+        nY = e.clientY;
+        desX = nX - sX;
+        desY = nY - sY;
+        tX += desX * 0.1;
+        tY += desY * 0.1;
+        applyTransform(odrag);
+        sX = nX;
+        sY = nY;
+    }
+
+    function onPointerUp() {
+        odrag.timer = setInterval(function() {
+            desX *= 0.95;
+            desY *= 0.95;
             tX += desX * 0.1;
             tY += desY * 0.1;
-            applyTranform(odrag);
-            sX = nX;
-            sY = nY;
-        };
+            applyTransform(odrag);
+            playSpin(false);
+            if (Math.abs(desX) < 0.5 && Math.abs(desY) < 0.5) {
+                clearInterval(odrag.timer);
+                playSpin(true);
+            }
+        }, 17);
+        document.removeEventListener('pointermove', onPointerMove);
+        document.removeEventListener('pointerup', onPointerUp);
+    }
 
-        this.onpointerup = function (e) {
-            odrag.timer = setInterval(function () {
-                desX *= 0.95;
-                desY *= 0.95;
-                tX += desX * 0.1;
-                tY += desY * 0.1;
-                applyTranform(odrag);
-                playSpin(false);
-                if (Math.abs(desX) < 0.5 && Math.abs(desY) < 0.5) {
-                    clearInterval(odrag.timer);
-                    playSpin(true);
-                }
-            }, 17);
-            this.onpointermove = this.onpointerup = null;
-        };
-
-        return false;
-    };
-
-    document.onmousewheel = function (e) {
+    document.addEventListener('wheel', function(e) {
         e = e || window.event;
-        var d = e.wheelDelta / 20 || -e.detail;
+        const d = e.wheelDelta / 20 || -e.detail;
         radius += d;
         init(1);
-    };
+    });
 
     const lightbox = document.getElementById('lightbox');
     const img = lightbox.querySelector('img');
@@ -95,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const commentSection = lightbox.querySelector('#comment-section');
     const commentList = commentSection.querySelector('#comment-list');
     const commentForm = commentSection.querySelector('#comment-form');
+    let currentFamiliarId = null;
 
     const spinContainer = document.getElementById('spin-container');
     spinContainer.addEventListener('click', function(event) {
@@ -104,6 +106,9 @@ document.addEventListener('DOMContentLoaded', function() {
             img.src = anchor.href;
             caption.textContent = anchor.querySelector('p') ? anchor.querySelector('p').textContent : "Image";
             lightbox.classList.add('active');
+
+            // Set current familiar ID
+            currentFamiliarId = anchor.closest('.item').dataset.familiarId;
 
             // Fetch and display comments
             fetchComments(anchor.href);
@@ -125,8 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (commentText.trim() === '') return;
 
         // Post the comment
-        console.log('Posting comment:', commentText);
-        postComment(commentText, img.src);
+        postComment(commentText, img.src, currentFamiliarId);
         commentForm.reset();
     });
 
@@ -182,18 +186,49 @@ document.addEventListener('DOMContentLoaded', function() {
         const reader = new FileReader();
         reader.onload = function(e) {
             const newImgUrl = e.target.result;
-    
+            const familiarId = document.querySelector('.item').dataset.familiarId;
+
             const newItem = document.createElement('div');
             newItem.className = 'item';
+            newItem.dataset.familiarId = familiarId;
             newItem.innerHTML = `
                 <a href="${newImgUrl}" target="_blank">
                     <img src="${newImgUrl}" alt="Familiar Image"/>
+                    <p>New Familiar</p>
                 </a>
             `;
             document.getElementById('spin-container').appendChild(newItem);
     
             updateCarousel(); // Update the carousel
             addEventListenersToNewItem(newItem); // Add event listener to the new item
+
+            // Upload the image to the server
+            const formData = new FormData();
+            formData.append('image', imageFile);
+            formData.append('familiar_id', familiarId);
+
+            fetch('/carousel/upload_image/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Image uploaded:', data);
+                newItem.querySelector('a').href = data.url;
+                newItem.querySelector('img').src = data.url;
+            })
+            .catch(error => {
+                console.error('Error uploading image:', error);
+            });
+
             crudOverlay.style.display = 'none'; // Close the overlay
         };
         reader.readAsDataURL(imageFile); // This converts the image file to a data URL
@@ -209,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const items = document.querySelectorAll('#spin-container .item');
         items.forEach((item, index) => {
             const listItem = document.createElement('li');
-            const itemText = item.querySelector('p') ? item.querySelector('p').textContent : "Image " + (index + 1);
+            const itemText = item.querySelector('p') ? item.querySelector('p').textContent : `Image ${index + 1}`;
             listItem.textContent = itemText;
             listItem.addEventListener('click', function() {
                 item.remove(); // Remove the clicked item
@@ -226,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const items = document.querySelectorAll('#spin-container .item');
         items.forEach((item, index) => {
             const listItem = document.createElement('li');
-            const itemText = item.querySelector('p') ? item.querySelector('p').textContent : "Image " + (index + 1);
+            const itemText = item.querySelector('p') ? item.querySelector('p').textContent : `Image ${index + 1}`;
             listItem.textContent = itemText;
             listItem.addEventListener('click', function() {
                 const newText = prompt('Edit the name of the Familiar:', itemText);
@@ -252,7 +287,10 @@ document.addEventListener('DOMContentLoaded', function() {
             img.src = this.href;
             caption.textContent = this.querySelector('p') ? this.querySelector('p').textContent : "Image";
             lightbox.classList.add('active');
-
+    
+            // Set current familiar ID
+            currentFamiliarId = item.dataset.familiarId;
+    
             // Fetch comments for the selected image
             fetchComments(this.href);
         });
@@ -260,7 +298,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function fetchComments(imageUrl) {
         console.log('Fetching comments for:', imageUrl);
-        fetch(`/comments/fetch/?image_url=${encodeURIComponent(imageUrl)}`)
+        fetch(`/carousel/comments/fetch/?image_url=${encodeURIComponent(imageUrl)}&familiar_id=${encodeURIComponent(currentFamiliarId)}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -281,15 +319,15 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
-    function postComment(text, imageUrl) {
+    function postComment(text, imageUrl, familiarId) {
         console.log('Posting comment to:', imageUrl);
-        fetch('/comments/', {
+        fetch('/carousel/comments/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken') // Function to get CSRF token
+                'X-CSRFToken': getCookie('csrftoken')
             },
-            body: JSON.stringify({ text: text, image_url: imageUrl })
+            body: JSON.stringify({ text, image_url: imageUrl, familiar_id: familiarId })
         })
         .then(response => {
             if (!response.ok) {

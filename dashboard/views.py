@@ -1,15 +1,15 @@
 # dashboard/views.py
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import FamiliaresForm
+from .forms import FamiliaresForm, UserProfileForm, CustomChangePasswordForm
 from memoria.models import Familiares
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.urls import reverse_lazy
-from .forms import UserProfileForm, CustomChangePasswordForm
 from django.contrib import messages
 from django.contrib.auth.views import PasswordChangeView
 import qrcode
 from django.conf import settings
+import os  # Add the missing import for os
 
 
 @login_required
@@ -35,6 +35,7 @@ def add_familiar(request):
             qr_url = f"{settings.SITE_URL}/{familiar.unique_hash}"
             qr = qrcode.make(qr_url)
             qr_filename = os.path.join(settings.MEDIA_ROOT, 'qrcodes', f'{familiar.unique_hash}.png')
+            os.makedirs(os.path.dirname(qr_filename), exist_ok=True)  # Ensure directory exists
             qr.save(qr_filename)
 
             return redirect('dashboard:list_familiares')
@@ -67,7 +68,6 @@ def userLogout(request):
     return redirect('/')   
 
 
-
 @login_required
 def user_profile(request):
     if request.method == 'POST':
@@ -78,9 +78,6 @@ def user_profile(request):
     else:
         form = UserProfileForm(instance=request.user)
     return render(request, 'dashboard/user_profile.html', {'form': form})
-
-
-
 
 
 class CustomChangePasswordView(PasswordChangeView):

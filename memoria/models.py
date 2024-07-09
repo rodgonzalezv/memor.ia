@@ -4,18 +4,13 @@ from django.core.validators import MaxLengthValidator
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from datetime import date
-
-import hashlib
-import os
 import random
 import string
-
+import os
 
 class Memorial(models.Model):
     id_memorial=models.AutoField(primary_key=True)
     nombre=models.CharField(max_length=250)
-       
-
     class Meta:
         verbose_name = ("Memorial")
         verbose_name_plural = ("Memorials")
@@ -33,12 +28,11 @@ class Planes(models.Model):
     cantidad = models.IntegerField()
     valor_factor = models.IntegerField()
     link_pago=models.CharField(max_length=50)
-
     class Meta:
         verbose_name = ("Planes")
-        verbose_name_plural = ("Planess")
+        verbose_name_plural = ("Planes")
 
-    def __str__(self):  
+    def __str__(self):
         return self.nombre
 
     def get_absolute_url(self):
@@ -67,20 +61,21 @@ class Familiares(models.Model):
         ('UY', 'Uruguay'),
         ('VE', 'Venezuela'),
         ('OT','Otra')
-        )
-    
-    id_familiar=models.AutoField(primary_key=True)
+    )
+
+    id_familiar = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    nombre_familiar=models.CharField(max_length=100)
-    apellidos_familiar=models.CharField(max_length=100)
-    fecha_nacimiento=models.DateField(auto_now=False, auto_now_add=False)
-    fecha_deceso=models.DateField(auto_now=False, auto_now_add=False)
+    nombre_familiar = models.CharField(max_length=100)
+    apellidos_familiar = models.CharField(max_length=100)
+    fecha_nacimiento = models.DateField(auto_now=False, auto_now_add=False)
+    fecha_deceso = models.DateField(auto_now=False, auto_now_add=False)
     parentezco = models.CharField(max_length=100)
     nacionalidad = models.CharField(max_length=2, choices=OPC_NACIONALIDAD, default='CL')
-    avatar_picture = models.ImageField(upload_to='familiares_images/', null=True, blank=True) 
+    avatar_picture = models.ImageField(upload_to='familiares_images/', null=True, blank=True)
+    unique_hash = models.CharField(max_length=10, unique=True, blank=True, null=True)
 
-#    def __str__(self):
-#        return self.nombre_familiar, self.apellidos_familiar
+    def __str__(self):
+        return f"{self.nombre_familiar} {self.apellidos_familiar}"
 
     def save(self, *args, **kwargs):
         if not self.unique_hash:
@@ -93,12 +88,12 @@ class Familiares(models.Model):
             hash = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
         return hash
 
+class AdditionalImage(models.Model):
+    image = models.ImageField(upload_to='additional_images/')
+    familiar = models.ForeignKey(Familiares, on_delete=models.CASCADE, related_name='additional_images')
+
     def __str__(self):
-        return f"{self.nombre_familiar} {self.apellidos_familiar}"
-        
-
-
-
+        return f"Additional Image for {self.familiar.nombre_familiar}"
 
 class Roles(models.Model):
     id_rol=models.AutoField(primary_key=True)
@@ -127,7 +122,7 @@ class Usuarios(models.Model):
         self.contraseña = make_password(raw_password)
 
     def __str__(self):
-        return self.nombres, self.apellidos
+        return f"{self.nombres} {self.apellidos}"
 
 class Usuarios_Planes(models.Model):
     id_plan_usuario=models.AutoField(primary_key=True)
@@ -144,6 +139,7 @@ class Comment(models.Model):
     familiar = models.ForeignKey(Familiares, on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    image_url = models.URLField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return f"Comment by {self.user.username} on {self.familiar.nombre_familiar}"

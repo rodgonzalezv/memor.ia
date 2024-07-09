@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Familiares List</h2>
+    <h2>Listado Familiares</h2>
     <div class="row">
         {% for familiar in familiares %}
         <div class="col-md-4">
@@ -12,15 +12,15 @@
                 </a>
                 <div class="card-body">
                     <h5 class="card-title">{{ familiar.nombre_familiar }} {{ familiar.apellidos_familiar }}</h5>
-                    <p class="card-text">Born: {{ familiar.fecha_nacimiento }} - Died: {{ familiar.fecha_deceso }}</p>
-                    <p class="card-text">Relationship: {{ familiar.parentezco }}</p>
-                    <a href="{% url 'carousel:edit_familiar' familiar.id_familiar %}" class="btn btn-primary">Edit</a>
-                    <a href="{% url 'carousel:remove_familiar' familiar.id_familiar %}" class="btn btn-danger">Delete</a>
+                    <p class="card-text">Nacimiento: {{ familiar.fecha_nacimiento }} - Fallecimiento: {{ familiar.fecha_deceso }}</p>
+                    <p class="card-text">Parentezco: {{ familiar.parentezco }}</p>
+                    <a href="{% url 'carousel:edit_familiar' familiar.id_familiar %}" class="btn btn-primary">Editar</a>
+                    <a href="{% url 'carousel:remove_familiar' familiar.id_familiar %}" class="btn btn-danger">Eliminar</a>
                 </div>
             </div>
         </div>
         {% empty %}
-        <p>No familiares found.</p>
+        <p>No se han encontrado familiares.</p>
         {% endfor %}
     </div>
 </div>

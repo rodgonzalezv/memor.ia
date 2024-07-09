@@ -19,9 +19,9 @@
     <div id="drag-container">
         <div id="spin-container">
             {% for image in images %}
-            <div class="item">
-                <a href="{{ image.url }}">
-                    <img src="{{ image.url }}" alt="{{ familiar.nombre_familiar }}">
+            <div class="item" data-familiar-id="{{ familiar.id_familiar }}">
+                <a href="{{ image }}">
+                    <img src="{{ image }}" alt="{{ familiar.nombre_familiar }}">
                     <p>{{ familiar.nombre_familiar }}</p>
                 </a>
             </div>
@@ -42,7 +42,8 @@
             <!-- Add Image Form -->
             <div id="add-familiar-form" class="crud-form">
                 <form id="add-image-form">
-                    <input type="file" id="new-image" accept="image/*" required>
+                    <input type="file" id="new-image" accept="image/*" multiple required>
+                    <input type="hidden" id="familiar-id" value="{{ familiar.id_familiar }}">
                     <button type="submit">Añadir imagen</button>
                 </form>
             </div>
@@ -64,7 +65,7 @@
         <img src="" alt="Lightbox Image">
         <p class="overlay-caption"></p>
         <div id="comment-section">
-            <div id="comment-list"></div>
+            <ul id="comment-list"></ul>
             <form id="comment-form">
                 <textarea name="comment" placeholder="Add a comment" required></textarea>
                 <button type="submit">Post Comment</button>
