@@ -61,6 +61,10 @@ def remove_familiar(request, pk):
         return redirect('dashboard:dashboard_home')
     return render(request, 'carousel/remove_familiar.html', {'familiar': familiar})
 
+
+"""COMENTARIO DE PRUEBA"""
+
+
 @csrf_exempt
 @login_required
 def upload_image(request):
