@@ -84,14 +84,25 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-
+"""""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.memoria',
     }
 }
+"""
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'memoria',
+        'USER': 'memoria',
+        'PASSWORD': 'memoria',
+        'HOST': 'localhost',  # O la IP de tu servidor de base de datos
+        'PORT': '5432',  # Puerto por defecto de PostgreSQL
+    }
+}
 
 
 # Password validation
