@@ -75,7 +75,7 @@ class Familiares(models.Model):
 
     def __str__(self):
         return f"{self.nombre_familiar} {self.apellidos_familiar}"
-
+"""
     def save(self, *args, **kwargs):
         if not self.unique_hash:
             self.unique_hash = self.generate_unique_hash()
@@ -86,6 +86,7 @@ class Familiares(models.Model):
         while Familiares.objects.filter(unique_hash=hash).exists():
             hash = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
         return hash
+"""
 
 class AdditionalImage(models.Model):
     image = models.ImageField(upload_to='additional_images/')
