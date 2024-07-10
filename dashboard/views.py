@@ -20,6 +20,14 @@ def dashboard_home(request):
 @login_required
 def list_familiares(request):
     familiares = Familiares.objects.filter(user=request.user)
+    context = {
+        'familiares': familiares,
+        'MEDIA_URL': settings.MEDIA_URL,
+    }
+    return render(request, 'dashboard/list_familiares.html', context)
+
+def list_familiares(request):
+    familiares = Familiares.objects.filter(user=request.user)
     return render(request, 'dashboard/list_familiares.html', {'familiares': familiares})
 
 @login_required

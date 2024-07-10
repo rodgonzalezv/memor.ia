@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from .views import CustomChangePasswordView
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'dashboard'
 
@@ -14,4 +16,4 @@ urlpatterns = [
     path('userLogout', views.userLogout, name='userLogout'),
     path('user_profile', views.user_profile, name='user_profile'),
     path('cambiaPass', CustomChangePasswordView.as_view(), name='cambiaPass'),    
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
