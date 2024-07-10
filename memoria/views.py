@@ -247,7 +247,8 @@ def familiarRegistro(request):
 
 @login_required
 def familiarListado(request):
-    familiares = Familiares.objects.filter(user=request.user)
+    familiares = Familiares.objects.filter(user=request.user).order_by('-id_familiar')
+
 def suscripcion(request):
     usuario = request.user
     suscripcion = Usuarios_Planes.objects.filter(id_usuario=usuario).first()
