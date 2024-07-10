@@ -10,7 +10,6 @@ import json, logging, os
 
 logger = logging.getLogger(__name__)
 
-@login_required
 def carousel_home(request, pk):
     familiar = get_object_or_404(Familiares, id_familiar=pk)
     images = [familiar.avatar_picture.url] + [img.image.url for img in familiar.additional_images.all()]

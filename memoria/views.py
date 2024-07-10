@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash, get_user_model
 from django.contrib.auth.views import PasswordChangeView
@@ -15,11 +15,25 @@ import os
 from .forms import formUserRegistro, formFamiliarRegistro, formFamiliarUpdate, CustomChangePasswordForm, UserProfileForm, SuscripcionForm
 
 def hash_redirect(request, hash):
-    familiar = get_object_or_404(Familiares, unique_hash=hash)
-    redirect_url = f"{settings.SITE_URL}/carousel/{familiar.id_familiar}/"
-    return redirect(redirect_url)
-
-
+    try:
+        # Buscar el familiar correspondiente al hash
+        familiar = get_object_or_404(Familiares, unique_hash=hash)
+        
+        # Construir la URL completa para la redirección
+        redirect_url = f"{settings.SITE_URL}/carousel/{familiar.id_familiar}/"
+        
+        # Redirigir a la URL específica del familiar
+        return redirect(redirect_url)
+    except Http404:
+        # Devolver una respuesta con un script para mostrar un mensaje de alerta y redirigir
+        message = "El memorial solicitado, no existe en nuestra base de datos, o corresponde a un memorial privado."
+        script = f"""
+        <script type="text/javascript">
+            alert("{message}");
+            window.location.href = "{settings.SITE_URL}/";
+        </script>
+        """
+        return HttpResponse(script)
 
 
 def home(request):
