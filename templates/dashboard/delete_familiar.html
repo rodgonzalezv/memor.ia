@@ -1,0 +1,13 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>¿Estás seguro que desea eliminar el familiar?</h2>
+    <p>{{ familiar.nombre_familiar }} {{ familiar.apellidos_familiar }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="{% url 'dashboard:list_familiares' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
