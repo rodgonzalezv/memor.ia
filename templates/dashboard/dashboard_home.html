@@ -13,7 +13,7 @@
         var visitasChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: [{% for familiar in familiares %}'{{ familiar.nombre_familiar }}', {% endfor %}],
+                labels: [{% for familiar in familiares %}'{{ familiar.nombre_familiar }} {{ familiar.apellidos_familiar }}', {% endfor %}],
                 datasets: [{
                     label: 'Número de visitas',
                     data: [{% for familiar in familiares %}{{ familiar.visitas }}, {% endfor %}],
