@@ -25,8 +25,8 @@
                     </div>
                     <div class="row p-1">
                         <div class="col-md-12 text-center">
-                            <a href="{% url 'carousel:edit_familiar' familiar.id_familiar %}" class="btn btn-primary">Editar</a>
-                            <a href="{% url 'carousel:remove_familiar' familiar.id_familiar %}" class="btn btn-danger">Eliminar</a>
+                            <a href="{% url 'dashboard:update_familiar' familiar.id_familiar %}" class="btn btn-primary">Editar</a>
+                            <a href="{% url 'dashboard:delete_familiar' familiar.id_familiar %}" class="btn btn-danger">Eliminar</a>
                         </div>
                     </div>                    
                 </div>
