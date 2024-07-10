@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from memoria import views as memoria_views  # Import the views from memoria
+from memoria import views as memoria_views # Import the views from memoria
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -11,4 +11,5 @@ urlpatterns = [
     path('dashboard/', include('dashboard.urls', namespace='dashboard')),
     path('carousel/', include('carousel.urls', namespace='carousel')),
     path('qr/', include('qr.urls', namespace='qr')),
+    path('<str:hash>/', memoria_views.hash_redirect, name='hash_redirect'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

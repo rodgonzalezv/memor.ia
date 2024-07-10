@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash, get_user_model
 from django.contrib.auth.views import PasswordChangeView
@@ -13,6 +13,12 @@ from .models import Memorial, Planes, Usuarios_Planes, Familiares
 import requests
 import os
 from .forms import formUserRegistro, formFamiliarRegistro, formFamiliarUpdate, CustomChangePasswordForm, UserProfileForm, SuscripcionForm
+
+def hash_redirect(request, hash):
+    familiar = get_object_or_404(Familiares, unique_hash=hash)
+    redirect_url = f"{settings.SITE_URL}/carousel/{familiar.id_familiar}/"
+    return redirect(redirect_url)
+
 
 
 
