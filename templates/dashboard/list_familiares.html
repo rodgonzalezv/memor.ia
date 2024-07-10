@@ -18,10 +18,9 @@
                             <p class="card-text">Parentezco: {{ familiar.parentezco }}</p>
                         </div>
                         <div class="col-md-5 text-center">
-                            <button class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#qrModal{{ familiar.id_familiar }}">
+                            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#qrModal{{ familiar.id_familiar }}">
                                 <img src="../../media/qrcodes/{{ familiar.unique_hash }}.png" class="img-fluid small-qr" alt="QR Code" style="width: 150px; height: 150px;">
-                                <div>Click para compartir</div>
-                            </button>    
+                            </button>   
                         </div>
                     </div>
                     <div class="row">
