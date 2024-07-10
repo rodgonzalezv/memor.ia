@@ -19,6 +19,10 @@ def hash_redirect(request, hash):
         # Buscar el familiar correspondiente al hash
         familiar = get_object_or_404(Familiares, unique_hash=hash)
         
+        # Incrementar el contador de visitas
+        familiar.visitas += 1
+        familiar.save()
+
         # Construir la URL completa para la redirección
         redirect_url = f"{settings.SITE_URL}/carousel/{familiar.id_familiar}/"
         

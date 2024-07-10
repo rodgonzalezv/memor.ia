@@ -73,6 +73,7 @@ class Familiares(models.Model):
     nacionalidad = models.CharField(max_length=2, choices=OPC_NACIONALIDAD, default='CL')
     avatar_picture = models.ImageField(upload_to='familiares_images/', null=True, blank=True)
     unique_hash = models.CharField(max_length=10, unique=True, blank=True, null=True)
+    visitas = models.PositiveIntegerField(default=0) 
 
     def __str__(self):
         return f"{self.nombre_familiar} {self.apellidos_familiar}"

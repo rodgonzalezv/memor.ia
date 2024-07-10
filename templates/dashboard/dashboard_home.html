@@ -18,9 +18,36 @@
                 </div>
             </div>
         </div>
+
+    
         {% empty %}
         <p>No familiares found.</p>
         {% endfor %}
     </div>
+    <h1>Estadísticas de Visitas</h1>
+    <canvas id="visitasChart"></canvas>
+    <script>
+        var ctx = document.getElementById('visitasChart').getContext('2d');
+        var visitasChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [{% for familiar in familiares %}'{{ familiar.nombre_familiar }}', {% endfor %}],
+                datasets: [{
+                    label: 'Número de visitas',
+                    data: [{% for familiar in familiares %}{{ familiar.visitas }}, {% endfor %}],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>         
 </div>
 {% endblock %}
