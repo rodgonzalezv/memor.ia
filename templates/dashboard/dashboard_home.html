@@ -5,7 +5,7 @@
 
 <div class="container mt-5">
     <div class="container">
-        <h1>Estadísticas de Visitas</h1>
+        <h1>Estadísticas de Visitas</h1><hr>
         <canvas id="visitasChart"></canvas>
     </div>
     <script>
@@ -61,12 +61,12 @@
                         display: true,
                         text: 'Número de visitas por Familiar',
                         font: {
-                            size: 18,
+                            size: 33,
                             weight: 'bold'
                         }
                     },
                     datalabels: {
-                        anchor: 'end',
+                        anchor: 'first',
                         align: 'end',
                         formatter: function(value, context) {
                             return value;
