@@ -106,7 +106,7 @@ def userRegistro(request):
             group = Group.objects.get(name='Clientes')  
             user.groups.add(group)
             
-            activation_link = 'http://localhost:8000/activar-cuenta/' + str(user.id)
+            activation_link = 'https://memor-ia.cl/memoria/activar-cuenta/' + str(user.id)
             imagen_url = request.build_absolute_uri('https://virtual.cl/img/logo1.png')
             contenido_html = f"""
                 <html>
@@ -128,7 +128,7 @@ def userRegistro(request):
                 html_message=contenido_html
             )
             messages.success(request, 'Registro exitoso. Se ha enviado un correo electrónico para activar tu cuenta.')
-            return redirect('dashboard_home')  
+            return redirect('/')  
     else:
         form = formUserRegistro()
     return render(request, 'memoria/userRegistro.html', {'userRegistro': form})
